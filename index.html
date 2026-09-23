@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интернет-магазин</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Оформление заказа</h1>
+
+    <form id="orderForm">
+
+        <!-- Контактные данные -->
+        <section>
+            <h2>1. Контактные данные</h2>
+
+            <label for="name">ФИО:</label>
+            <input type="text" id="name" placeholder="Введите ФИО">
+            <p class="error" id="nameError"></p>
+
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" placeholder="example@mail.com">
+            <p class="error" id="emailError"></p>
+
+            <label for="phone">Телефон:</label>
+            <input type="text" id="phone" placeholder="+7 700 000 00 00">
+            <p class="error" id="phoneError"></p>
+        </section>
+
+
+        <!-- Товар -->
+        <section>
+            <h2>2. Товар</h2>
+
+            <label for="product">Выберите товар:</label>
+            <select id="product">
+                <option value="">Выберите товар</option>
+                <option value="50000">Наушники — 50 000 ₸</option>
+                <option value="80000">Клавиатура — 80 000 ₸</option>
+                <option value="120000">Игровая мышь — 120 000 ₸</option>
+            </select>
+            <p class="error" id="productError"></p>
+
+            <label for="quantity">Количество:</label>
+            <input type="number" id="quantity" min="1" value="1">
+            <p class="error" id="quantityError"></p>
+        </section>
+
+
+        <!-- Доставка -->
+        <section>
+            <h2>3. Доставка</h2>
+
+            <label for="city">Город:</label>
+            <select id="city">
+                <option value="">Выберите город</option>
+                <option value="Алматы">Алматы</option>
+                <option value="Астана">Астана</option>
+                <option value="Шымкент">Шымкент</option>
+                <option value="Караганда">Караганда</option>
+            </select>
+            <p class="error" id="cityError"></p>
+
+            <p>Способ доставки:</p>
+
+            <label class="radio">
+                <input type="radio" name="delivery" value="0">
+                Курьер
+            </label>
+
+            <label class="radio">
+                <input type="radio" name="delivery" value="2000">
+                Пункт выдачи (+2 000 ₸)
+            </label>
+
+            <p class="error" id="deliveryError"></p>
+        </section>
+
+
+        <!-- Оплата -->
+        <section>
+            <h2>4. Оплата</h2>
+
+            <p>Способ оплаты:</p>
+
+            <label class="radio">
+                <input type="radio" name="payment" value="card">
+                Банковская карта
+            </label>
+
+            <label class="radio">
+                <input type="radio" name="payment" value="cash">
+                Наличными
+            </label>
+
+            <p class="error" id="paymentError"></p>
+        </section>
+
+
+        <!-- Дополнительные услуги -->
+        <section>
+            <h2>5. Дополнительные услуги</h2>
+
+            <label class="checkbox">
+                <input type="checkbox" id="gift">
+                Подарочная упаковка (+1 000 ₸)
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" id="insurance">
+                Страховка заказа (+2 000 ₸)
+            </label>
+        </section>
+
+
+        <!-- Согласие -->
+        <section>
+            <h2>6. Согласия</h2>
+
+            <label class="checkbox">
+                <input type="checkbox" id="agreement">
+                Я согласен с условиями заказа
+            </label>
+
+            <p class="error" id="agreementError"></p>
+        </section>
+
+
+        <button type="submit">Оформить заказ</button>
+
+        <div id="result"></div>
+
+    </form>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
