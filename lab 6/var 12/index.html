@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Модальное окно</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="hero">
+    <span class="badge">Лабораторная №6</span>
+    <h1>Клуб <span>веб-разработчиков</span></h1>
+    <p>Присоединяйтесь к сообществу, делитесь проектами и учитесь вместе.</p>
+    <button id="openBtn" class="primary">Вступить в клуб</button>
+    <small>Подсказка: нажмите клавишу <kbd>N</kbd>, чтобы открыть окно</small>
+  </main>
+
+  <div id="overlay" class="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button id="closeBtn" class="close" aria-label="Закрыть">✕</button>
+      <div class="emoji">🚀</div>
+      <h2 id="modalTitle">Присоединиться</h2>
+      <p class="hint">Заполните форму — закрыть окно можно крестиком, кликом вне окна или клавишей <kbd>Esc</kbd></p>
+
+      <form id="joinForm" novalidate>
+        <label>
+          Имя
+          <input id="nameInput" type="text" placeholder="Ваше имя" autocomplete="off">
+          <span class="msg" id="nameMsg"></span>
+        </label>
+        <label>
+          Email
+          <input id="emailInput" type="email" placeholder="you@example.com" autocomplete="off">
+          <span class="msg" id="emailMsg"></span>
+        </label>
+        <button type="submit" class="primary full">Отправить заявку</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toasts" class="toasts"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
