@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список покупок</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+    <h1>🛒 Список покупок</h1>
+    <p class="subtitle">Нажмите на пункт, чтобы отметить его купленным</p>
+
+    <form id="addForm" class="row">
+      <input id="itemInput" type="text" placeholder="Например: молоко" autocomplete="off">
+      <button id="addBtn" type="submit">Добавить</button>
+    </form>
+
+    <div class="progress"><div id="bar" class="bar"></div></div>
+    <div class="stats">
+      <span id="stats">Пока пусто</span>
+      <button id="clearBtn" class="ghost" type="button">Очистить купленное</button>
+    </div>
+
+    <ul id="list"></ul>
+    <p id="empty" class="empty">Список пуст — добавьте первый товар ✨</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
