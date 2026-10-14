@@ -1,0 +1,5 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Список задач</title><link rel="stylesheet" href="style.css"><script src="app.js" defer></script></head>
+<body><div class="app"><header><p class="eyebrow">ЛАБОРАТОРНАЯ РАБОТА №7 · СРЕДНИЙ УРОВЕНЬ</p><h1>Мои задачи</h1><p>Добавление задач и изменение их статуса</p></header>
+<nav><button class="tab active" data-filter="all">Все <span id="count-all">0</span></button><button class="tab" data-filter="active">Активные <span id="count-active">0</span></button><button class="tab" data-filter="done">Выполненные <span id="count-done">0</span></button></nav>
+<main><form id="task-form"><label for="task-input">Новая задача</label><div class="form-row"><input id="task-input" maxlength="100" placeholder="Например, выполнить лабораторную" required><button class="primary" type="submit">Добавить</button></div><p id="form-error" role="alert"></p></form><section id="task-list" aria-live="polite"></section></main><footer>Задачи хранятся в массиве JavaScript и отображаются через DOM.</footer></div></body></html>
