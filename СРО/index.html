@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Учёт личных доходов и расходов">
+  <title>Финансы — учёт личных расходов</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">₸</span><div><strong>Мои финансы</strong><small>Личный бюджет</small></div></div>
+      <nav aria-label="Основная навигация">
+        <a class="nav-link active" href="#dashboard">▦ <span>Обзор</span></a>
+        <a class="nav-link" href="#transactions">↕ <span>Операции</span></a>
+        <a class="nav-link" href="#reports">◔ <span>Отчёты</span></a>
+      </nav>
+      <div class="sidebar-note"><span class="note-icon">✦</span><p><strong>Полезная привычка</strong><br>Записывайте расходы сразу — так бюджет будет точнее.</p></div>
+      <div class="sidebar-footer">Учебный проект · 2026</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div><p class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</p><h1>Учет личных расходов</h1><p class="subheading">Контролируйте деньги и принимайте решения увереннее.</p></div>
+        <button class="primary-btn" id="addTopButton">＋ Добавить операцию</button>
+      </header>
+
+      <section id="dashboard" class="summary-grid" aria-label="Сводка бюджета">
+        <article class="summary-card balance-card"><div class="card-label">Текущий баланс <span class="card-icon">◈</span></div><div class="amount" id="balanceValue">0 ₸</div><div class="card-foot"><span class="status-dot"></span> Доходы минус расходы</div></article>
+        <article class="summary-card"><div class="card-label">Доходы <span class="card-icon income-icon">↗</span></div><div class="amount income-text" id="incomeValue">0 ₸</div><div class="card-foot">Всего поступило</div></article>
+        <article class="summary-card"><div class="card-label">Расходы <span class="card-icon expense-icon">↘</span></div><div class="amount expense-text" id="expenseValue">0 ₸</div><div class="card-foot">Всего потрачено</div></article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel transaction-panel" id="transactions">
+          <div class="panel-heading"><div><h2>Последние операции</h2><p>История ваших финансовых действий</p></div><button class="text-btn" id="showAllButton">Показать все</button></div>
+          <div class="filters"><label class="search-box">⌕ <input id="searchInput" type="search" placeholder="Поиск по описанию…"></label><select id="typeFilter" aria-label="Фильтр по типу"><option value="all">Все операции</option><option value="income">Доходы</option><option value="expense">Расходы</option></select></div>
+          <div class="table-wrap"><table><thead><tr><th>Операция</th><th>Категория</th><th>Дата</th><th class="right">Сумма</th><th></th></tr></thead><tbody id="transactionsBody"></tbody></table></div>
+          <div id="emptyState" class="empty-state"><div class="empty-icon">↗</div><strong>Пока нет операций</strong><p>Добавьте первый доход или расход, чтобы начать учет.</p><button class="primary-btn small-btn" id="emptyAddButton">Добавить операцию</button></div>
+        </article>
+
+        <article class="panel" id="reports">
+          <div class="panel-heading"><div><h2>Структура расходов</h2><p>Распределение по категориям</p></div><span class="period-chip">За всё время</span></div>
+          <div id="categoryReport" class="category-report"></div>
+          <div class="report-total"><span>Всего расходов</span><strong id="reportExpenseTotal">0 ₸</strong></div>
+        </article>
+      </section>
+
+      <section class="panel tips-panel">
+        <div class="tip-badge">i</div><div><h2>Как читать сводку</h2><p>Положительный баланс означает, что доходы превышают расходы. Отчёт по категориям помогает увидеть, на что уходит больше всего денег. Данные сохраняются в этом браузере.</p></div>
+      </section>
+      <footer>Учебный проект «Учет личных расходов» · Данные хранятся локально в браузере</footer>
+    </main>
+  </div>
+
+  <dialog id="transactionDialog">
+    <form id="transactionForm" method="dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">НОВАЯ ЗАПИСЬ</p><h2 id="dialogTitle">Добавить операцию</h2></div><button type="button" class="close-btn" id="closeDialog" aria-label="Закрыть">×</button></div>
+      <div class="form-group"><label>Тип операции</label><div class="segmented"><label><input type="radio" name="type" value="expense" checked><span>− Расход</span></label><label><input type="radio" name="type" value="income"><span>＋ Доход</span></label></div></div>
+      <div class="form-group"><label for="description">Описание</label><input id="description" name="description" maxlength="70" placeholder="Например, продукты" required></div>
+      <div class="form-row"><div class="form-group"><label for="amount">Сумма (₸)</label><input id="amount" name="amount" type="number" min="1" max="1000000000" step="1" placeholder="5000" required></div><div class="form-group"><label for="category">Категория</label><select id="category" name="category" required></select></div></div>
+      <div class="form-group"><label for="date">Дата</label><input id="date" name="date" type="date" required></div>
+      <p class="form-error" id="formError" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelButton">Отмена</button><button type="submit" class="primary-btn">Сохранить</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
