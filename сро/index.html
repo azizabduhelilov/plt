@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Учёт личных доходов и расходов: баланс, графики, бюджет и отчёты по категориям">
+  <meta name="color-scheme" content="light dark">
+  <title>Мои финансы — учёт личных расходов</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    // Тема применяется до отрисовки, чтобы не было «вспышки».
+    (function () {
+      try {
+        var saved = localStorage.getItem("personal-expenses-theme-v1");
+        var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      } catch (e) { document.documentElement.setAttribute("data-theme", "light"); }
+    })();
+  </script>
+</head>
+<body>
+  <!-- Набор иконок -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+      <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></symbol>
+      <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+      <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+      <symbol id="i-up" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7v10H7"/></symbol>
+      <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+      <symbol id="i-percent" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+      <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5M3 12a9 3 0 0 0 18 0"/></symbol>
+      <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.7 1.8L21.5 18.5l-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
+      <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3zM12 9v4M12 17h.01"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip-link" href="#main">К основному содержимому</a>
+
+  <div class="app">
+    <!-- Боковая панель / нижняя навигация -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">₸</span>
+        <div class="brand-text"><strong>Мои финансы</strong><small>Личный бюджет</small></div>
+      </div>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <a class="nav-link active" href="#overview" data-section="overview"><svg class="ico"><use href="#i-home"/></svg><span>Обзор</span></a>
+        <a class="nav-link" href="#analytics" data-section="analytics"><svg class="ico"><use href="#i-chart"/></svg><span>Аналитика</span></a>
+        <a class="nav-link" href="#transactions" data-section="transactions"><svg class="ico"><use href="#i-list"/></svg><span>Операции</span></a>
+        <button class="nav-link nav-button" type="button" id="navData"><svg class="ico"><use href="#i-database"/></svg><span>Данные</span></button>
+      </nav>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-icon"><svg class="ico"><use href="#i-sparkle"/></svg></div>
+        <p><strong>Совет дня</strong><span id="tipText">Записывайте расходы сразу — так бюджет получается точнее.</span></p>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="theme-toggle" type="button" id="themeToggle" aria-label="Переключить тему">
+          <svg class="ico ico-moon"><use href="#i-moon"/></svg>
+          <svg class="ico ico-sun"><use href="#i-sun"/></svg>
+          <span class="theme-label">Тёмная тема</span>
+        </button>
+        <small class="kbd-hint"><kbd>N</kbd> — новая операция · <kbd>/</kbd> — поиск</small>
+      </div>
+    </aside>
+
+    <main class="main" id="main">
+      <!-- Шапка -->
+      <header class="topbar" id="overview">
+        <div class="topbar-title">
+          <p class="eyebrow" id="greeting">Личный кабинет</p>
+          <h1>Учёт личных расходов</h1>
+          <p class="subheading" id="periodSubtitle">Контролируйте деньги и принимайте решения увереннее.</p>
+        </div>
+        <div class="topbar-actions">
+          <div class="period" role="tablist" aria-label="Период">
+            <button type="button" role="tab" data-period="week" aria-selected="false">Неделя</button>
+            <button type="button" role="tab" data-period="month" aria-selected="true">Месяц</button>
+            <button type="button" role="tab" data-period="year" aria-selected="false">Год</button>
+            <button type="button" role="tab" data-period="all" aria-selected="false">Всё время</button>
+          </div>
+          <button class="btn btn-primary" type="button" id="addTopButton"><svg class="ico"><use href="#i-plus"/></svg><span>Добавить операцию</span></button>
+        </div>
+      </header>
+
+      <!-- Сводка -->
+      <section class="stats" aria-label="Сводка бюджета">
+        <article class="stat stat-hero">
+          <div class="stat-head"><span>Общий баланс</span><span class="stat-icon"><svg class="ico"><use href="#i-wallet"/></svg></span></div>
+          <div class="stat-value" id="balanceValue">0 ₸</div>
+          <div class="stat-foot" id="balanceFoot">За период: 0 ₸</div>
+          <div class="hero-spark" id="heroSpark"></div>
+        </article>
+        <article class="stat">
+          <div class="stat-head"><span>Доходы</span><span class="stat-icon is-income"><svg class="ico"><use href="#i-up"/></svg></span></div>
+          <div class="stat-value is-income" id="incomeValue">0 ₸</div>
+          <div class="stat-foot"><span class="delta" id="incomeDelta">—</span></div>
+        </article>
+        <article class="stat">
+          <div class="stat-head"><span>Расходы</span><span class="stat-icon is-expense"><svg class="ico"><use href="#i-down"/></svg></span></div>
+          <div class="stat-value is-expense" id="expenseValue">0 ₸</div>
+          <div class="stat-foot"><span class="delta" id="expenseDelta">—</span></div>
+        </article>
+        <article class="stat">
+          <div class="stat-head"><span>Норма сбережений</span><span class="stat-icon is-accent"><svg class="ico"><use href="#i-percent"/></svg></span></div>
+          <div class="stat-value" id="savingsValue">—</div>
+          <div class="stat-foot" id="savingsFoot">Доля дохода, которая осталась</div>
+        </article>
+      </section>
+
+      <!-- Аналитика -->
+      <section class="grid-analytics" id="analytics" aria-label="Аналитика">
+        <article class="panel panel-dynamics">
+          <div class="panel-head">
+            <div><h2>Динамика за 6 месяцев</h2><p>Доходы и расходы по месяцам</p></div>
+            <ul class="legend-inline" aria-hidden="true">
+              <li><i class="dot dot-income"></i>Доходы</li>
+              <li><i class="dot dot-expense"></i>Расходы</li>
+            </ul>
+          </div>
+          <div class="chart-box" id="dynamicsChart" role="img" aria-label="Столбчатая диаграмма доходов и расходов по месяцам"></div>
+        </article>
+
+        <article class="panel panel-donut">
+          <div class="panel-head">
+            <div><h2>Структура расходов</h2><p id="donutSubtitle">Распределение по категориям</p></div>
+          </div>
+          <div class="donut-wrap">
+            <div class="donut" id="donutChart" role="img" aria-label="Круговая диаграмма расходов по категориям"></div>
+            <ul class="donut-legend" id="categoryReport"></ul>
+          </div>
+        </article>
+
+        <article class="panel panel-budget" id="budgetPanel">
+          <div class="panel-head">
+            <div><h2>Бюджет на месяц</h2><p id="budgetSubtitle">Лимит расходов на текущий месяц</p></div>
+            <button class="btn btn-ghost btn-sm" type="button" id="budgetEditButton"><svg class="ico"><use href="#i-target"/></svg><span id="budgetEditLabel">Задать лимит</span></button>
+          </div>
+          <div class="budget" id="budgetBody"></div>
+        </article>
+      </section>
+
+      <!-- Операции -->
+      <section class="panel panel-transactions" id="transactions" aria-label="Операции">
+        <div class="panel-head">
+          <div><h2>Операции</h2><p id="transactionsSubtitle">История ваших финансовых действий</p></div>
+        </div>
+        <div class="toolbar">
+          <label class="search"><svg class="ico"><use href="#i-search"/></svg><input id="searchInput" type="search" placeholder="Поиск по описанию и категории…" autocomplete="off" aria-label="Поиск"></label>
+          <select id="typeFilter" aria-label="Тип операции">
+            <option value="all">Все типы</option>
+            <option value="income">Доходы</option>
+            <option value="expense">Расходы</option>
+          </select>
+          <select id="categoryFilter" aria-label="Категория"></select>
+          <select id="sortSelect" aria-label="Сортировка">
+            <option value="date-desc">Сначала новые</option>
+            <option value="date-asc">Сначала старые</option>
+            <option value="amount-desc">Сумма: по убыванию</option>
+            <option value="amount-asc">Сумма: по возрастанию</option>
+          </select>
+        </div>
+
+        <div class="tx-list" id="transactionsList"></div>
+
+        <div class="empty" id="emptyState" hidden>
+          <div class="empty-art" aria-hidden="true"><svg class="ico"><use href="#i-wallet"/></svg></div>
+          <strong id="emptyTitle">Пока нет операций</strong>
+          <p id="emptyText">Добавьте первый доход или расход — или загрузите пример данных, чтобы посмотреть, как всё работает.</p>
+          <div class="empty-actions">
+            <button class="btn btn-primary btn-sm" type="button" id="emptyAddButton"><svg class="ico"><use href="#i-plus"/></svg>Добавить операцию</button>
+            <button class="btn btn-ghost btn-sm" type="button" id="emptyDemoButton"><svg class="ico"><use href="#i-sparkle"/></svg>Загрузить пример</button>
+          </div>
+        </div>
+
+        <div class="list-foot">
+          <span id="listCount"></span>
+          <button class="btn btn-ghost btn-sm" type="button" id="showAllButton" hidden>Показать все</button>
+        </div>
+      </section>
+
+      <footer class="footer">Учебный проект «Учёт личных расходов» · Данные хранятся только в вашем браузере</footer>
+    </main>
+  </div>
+
+  <button class="fab" type="button" id="fabButton" aria-label="Добавить операцию"><svg class="ico"><use href="#i-plus"/></svg></button>
+
+  <!-- Диалог: добавить / изменить операцию -->
+  <dialog id="transactionDialog" aria-labelledby="dialogTitle">
+    <form id="transactionForm" method="dialog" novalidate>
+      <div class="dialog-head">
+        <div><p class="eyebrow" id="dialogEyebrow">Новая запись</p><h2 id="dialogTitle">Добавить операцию</h2></div>
+        <button type="button" class="icon-btn" id="closeDialog" aria-label="Закрыть"><svg class="ico"><use href="#i-x"/></svg></button>
+      </div>
+
+      <div class="segmented" role="radiogroup" aria-label="Тип операции">
+        <label><input type="radio" name="type" value="expense" checked><span><svg class="ico"><use href="#i-down"/></svg>Расход</span></label>
+        <label><input type="radio" name="type" value="income"><span><svg class="ico"><use href="#i-up"/></svg>Доход</span></label>
+      </div>
+
+      <div class="amount-field">
+        <label for="amount">Сумма</label>
+        <div class="amount-input"><input id="amount" name="amount" type="number" inputmode="numeric" min="1" max="1000000000" step="1" placeholder="0" required><span>₸</span></div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Описание</label>
+        <input id="description" name="description" maxlength="70" placeholder="Например, продукты на неделю" autocomplete="off" required>
+      </div>
+
+      <div class="form-group">
+        <label id="categoryLabel">Категория</label>
+        <div class="chips" id="categoryChips" role="radiogroup" aria-labelledby="categoryLabel"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="date">Дата</label>
+        <input id="date" name="date" type="date" required>
+      </div>
+
+      <p class="form-error" id="formError" role="alert"></p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-soft" id="cancelButton">Отмена</button>
+        <button type="submit" class="btn btn-primary" id="submitButton">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Диалог: лимит бюджета -->
+  <dialog id="budgetDialog" aria-labelledby="budgetDialogTitle">
+    <form id="budgetForm" method="dialog" novalidate>
+      <div class="dialog-head">
+        <div><p class="eyebrow">Планирование</p><h2 id="budgetDialogTitle">Лимит на месяц</h2></div>
+        <button type="button" class="icon-btn" data-close="budgetDialog" aria-label="Закрыть"><svg class="ico"><use href="#i-x"/></svg></button>
+      </div>
+      <p class="dialog-note">Укажите, сколько вы готовы тратить в месяц. Мы покажем, сколько осталось и сколько можно тратить в день.</p>
+      <div class="amount-field">
+        <label for="budgetAmount">Лимит расходов</label>
+        <div class="amount-input"><input id="budgetAmount" type="number" inputmode="numeric" min="1" max="1000000000" step="1" placeholder="150000"><span>₸</span></div>
+      </div>
+      <p class="form-error" id="budgetError" role="alert"></p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" id="budgetClear">Убрать лимит</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-soft" data-close="budgetDialog">Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Диалог: данные -->
+  <dialog id="dataDialog" aria-labelledby="dataDialogTitle">
+    <div class="dialog-body">
+      <div class="dialog-head">
+        <div><p class="eyebrow">Управление</p><h2 id="dataDialogTitle">Данные и копии</h2></div>
+        <button type="button" class="icon-btn" data-close="dataDialog" aria-label="Закрыть"><svg class="ico"><use href="#i-x"/></svg></button>
+      </div>
+      <ul class="data-actions">
+        <li><button type="button" class="data-row" id="exportCsv"><span class="data-ico"><svg class="ico"><use href="#i-file"/></svg></span><span class="data-text"><strong>Экспорт в CSV</strong><small>Таблица для Excel и Google Таблиц</small></span></button></li>
+        <li><button type="button" class="data-row" id="exportJson"><span class="data-ico"><svg class="ico"><use href="#i-download"/></svg></span><span class="data-text"><strong>Резервная копия</strong><small>Сохранить все данные в файл JSON</small></span></button></li>
+        <li><button type="button" class="data-row" id="importJson"><span class="data-ico"><svg class="ico"><use href="#i-upload"/></svg></span><span class="data-text"><strong>Восстановить из копии</strong><small>Добавить операции из файла JSON</small></span></button></li>
+        <li><button type="button" class="data-row" id="loadDemo"><span class="data-ico"><svg class="ico"><use href="#i-sparkle"/></svg></span><span class="data-text"><strong>Пример данных</strong><small>Заполнить приложение демонстрационными записями</small></span></button></li>
+        <li><button type="button" class="data-row is-danger" id="clearAll"><span class="data-ico"><svg class="ico"><use href="#i-trash"/></svg></span><span class="data-text"><strong>Очистить всё</strong><small>Удалить все операции и лимит бюджета</small></span></button></li>
+      </ul>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
+    </div>
+  </dialog>
+
+  <!-- Диалог: подтверждение -->
+  <dialog id="confirmDialog" class="dialog-small" aria-labelledby="confirmTitle">
+    <div class="dialog-body">
+      <div class="confirm-icon" id="confirmIcon"><svg class="ico"><use href="#i-alert"/></svg></div>
+      <h2 id="confirmTitle">Подтвердите действие</h2>
+      <p id="confirmText"></p>
+      <div class="dialog-actions center">
+        <button type="button" class="btn btn-soft" id="confirmCancel">Отмена</button>
+        <button type="button" class="btn btn-danger" id="confirmOk">Удалить</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
