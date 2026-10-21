@@ -1,0 +1,27 @@
+(() => {
+'use strict';
+const K={shopping:'lab8_shopping_list',expenses:'lab8_expenses',budget:'lab8_personal_budget',draft:'lab8_budget_edit_draft'};
+const expCats=['Продукты','Транспорт','Учёба','Развлечения','Здоровье','Другое'];
+const budgetCats={expense:['Продукты','Транспорт','Жильё','Здоровье','Развлечения','Покупки','Образование','Связь','Другое'],income:['Зарплата','Подработка','Подарок','Стипендия','Инвестиции','Другое']};
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+function load(key,valid){try{const data=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(data)?data.filter(valid):[]}catch(e){return []}}
+function save(key,data){try{localStorage.setItem(key,JSON.stringify(data))}catch(e){alert('Не удалось сохранить данные в хранилище браузера.')}}
+function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function money(n){return new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0}).format(n)+' ₸'}
+function dateText(s){const [y,m,d]=s.split('-');return `${d}.${m}.${y}`}
+function validDate(s){return /^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&s<=today()}
+// ЗАДАНИЕ: Личный бюджет
+// бюджет, месячная сводка и редактирование операций.
+let budget=load(K.budget,x=>x&&typeof x.id==='string'&&['income','expense'].includes(x.type)&&typeof x.description==='string'&&typeof x.category==='string'&&Number.isInteger(x.amount)&&x.amount>0&&/^\d{4}-\d{2}-\d{2}$/.test(x.date));let editingId=null;
+function updateCats(selected){const type=$('budgetType').value;$('budgetCategory').innerHTML=budgetCats[type].map(c=>`<option>${esc(c)}</option>`).join('');if(selected&&budgetCats[type].includes(selected))$('budgetCategory').value=selected}
+function renderBudget(){const month=today().slice(0,7),rows=budget.filter(x=>x.date.slice(0,7)===month),income=rows.filter(x=>x.type==='income').reduce((s,x)=>s+x.amount,0),out=rows.filter(x=>x.type==='expense').reduce((s,x)=>s+x.amount,0);$('monthIncome').textContent=money(income);$('monthExpense').textContent=money(out);$('monthBalance').textContent=money(income-out);$('budgetCount').textContent=`${budget.length} операций`;$('budgetTable').innerHTML=[...budget].sort((a,b)=>b.date.localeCompare(a.date)).map(x=>`<tr><td>${x.type==='income'?'＋':'−'} ${esc(x.description)}</td><td>${esc(x.category)}</td><td>${dateText(x.date)}</td><td class="${x.type==='income'?'positive':'negative'}">${x.type==='income'?'+':'−'}${money(x.amount)}</td><td><button class="edit-btn" data-budget-edit="${esc(x.id)}">Изменить</button><button class="remove-btn" data-budget-del="${esc(x.id)}">Удалить</button></td></tr>`).join('');$('budgetEmpty').style.display=budget.length?'none':'block'}
+function resetForm(){editingId=null;$('budgetForm').reset();$('budgetType').value='expense';updateCats();$('budgetDate').value=today();$('budgetSubmit').textContent='＋ Добавить операцию';$('cancelEdit').classList.add('hidden');$('budgetError').textContent='';sessionStorage.removeItem(K.draft)}
+$('budgetDate').value=today();$('budgetDate').max=today();updateCats();$('budgetType').addEventListener('change',()=>updateCats());
+$('budgetForm').addEventListener('input',()=>{const draft={type:$('budgetType').value,category:$('budgetCategory').value,description:$('budgetDescription').value,amount:$('budgetAmount').value,date:$('budgetDate').value,editingId};try{sessionStorage.setItem(K.draft,JSON.stringify(draft))}catch(e){/* sessionStorage может быть недоступен */}});
+$('budgetForm').addEventListener('submit',e=>{e.preventDefault();const type=$('budgetType').value,category=$('budgetCategory').value,description=$('budgetDescription').value.trim(),amount=Number($('budgetAmount').value),date=$('budgetDate').value;if(!description||description.length>80){$('budgetError').textContent='Введите описание длиной до 80 символов.';return}if(!Number.isInteger(amount)||amount<1||amount>1e9){$('budgetError').textContent='Сумма должна быть целым числом от 1 до 1 000 000 000 ₸.';return}if(!budgetCats[type].includes(category)||!validDate(date)){$('budgetError').textContent='Выберите корректную категорию и дату.';return}const item={id:editingId||`${Date.now()}-${Math.random().toString(36).slice(2,8)}`,type,category,description,amount,date};if(editingId)budget=budget.map(x=>x.id===editingId?item:x);else budget.push(item);save(K.budget,budget);resetForm();renderBudget()});
+$('budgetTable').addEventListener('click',e=>{const edit=e.target.closest('[data-budget-edit]'),del=e.target.closest('[data-budget-del]');if(edit){const x=budget.find(r=>r.id===edit.dataset.budgetEdit);if(!x)return;editingId=x.id;$('budgetType').value=x.type;updateCats(x.category);$('budgetDescription').value=x.description;$('budgetAmount').value=x.amount;$('budgetDate').value=x.date;$('budgetSubmit').textContent='Сохранить изменения';$('cancelEdit').classList.remove('hidden');$('budgetError').textContent='';$('budgetForm').scrollIntoView({behavior:'smooth',block:'center'});return}if(del){const x=budget.find(r=>r.id===del.dataset.budgetDel);if(x&&confirm(`Удалить операцию «${x.description}»?`)){budget=budget.filter(r=>r.id!==x.id);if(editingId===x.id)resetForm();save(K.budget,budget);renderBudget()}}});
+$('cancelEdit').addEventListener('click',resetForm);
+
+renderBudget();
+})();
