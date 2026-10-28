@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Поиск публикаций — Fetch API</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <p class="eyebrow">Лабораторная работа №9</p>
+      <h1>Поиск публикаций</h1>
+      <p class="subtitle">Загрузите записи и найдите нужную по заголовку.</p>
+    </header>
+    <div class="toolbar">
+      <button id="loadBtn" type="button">Загрузить публикации</button>
+      <label for="searchInput">Поиск по заголовку</label>
+      <input id="searchInput" type="search" placeholder="Например, sunt aut..." disabled>
+    </div>
+    <p id="status" role="status" aria-live="polite">Сначала загрузите публикации.</p>
+    <section id="posts" class="posts" aria-label="Результаты поиска"></section>
+  </main>
+</body>
+</html>

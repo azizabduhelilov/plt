@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пользователи и публикации — Fetch API</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <p class="eyebrow">Лабораторная работа №9</p>
+      <h1>Пользователи и публикации</h1>
+      <p class="subtitle">Данные загружаются параллельно с помощью Promise.all().</p>
+    </header>
+    <div class="controls">
+      <button id="loadBtn" type="button">Обновить данные</button>
+      <label for="sortSelect">Сортировка</label>
+      <select id="sortSelect">
+        <option value="name">По имени</option>
+        <option value="count">По количеству публикаций</option>
+      </select>
+    </div>
+    <p id="status" role="status" aria-live="polite">Нажмите «Обновить данные».</p>
+    <section id="summary" class="summary" aria-label="Сводка"></section>
+    <section id="users" class="users" aria-label="Список пользователей"></section>
+  </main>
+</body>
+</html>

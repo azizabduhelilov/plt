@@ -1,0 +1,21 @@
+:root { font-family: Arial, sans-serif; color: #202638; background: #f2f4f8; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 28px 16px; }
+.container { max-width: 1050px; margin: auto; background: white; padding: 28px; border-radius: 18px; box-shadow: 0 8px 30px #1c2c4a12; }
+.eyebrow { color: #7a4ec4; font-weight: bold; text-transform: uppercase; letter-spacing: .08em; font-size: .8rem; }
+h1 { margin-bottom: 6px; }
+.subtitle { color: #687086; margin-top: 0; }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 22px 0; }
+button { border: 0; border-radius: 9px; padding: 11px 17px; background: #7a4ec4; color: white; font-weight: bold; cursor: pointer; }
+button:disabled { opacity: .6; cursor: wait; }
+select { padding: 10px; border: 1px solid #cbd2e2; border-radius: 9px; font: inherit; }
+#status { min-height: 24px; color: #7a4ec4; }
+.summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 18px 0; }
+.stat { background: #f5f0fc; padding: 18px; border-radius: 12px; }
+.stat strong { display: block; font-size: 1.6rem; margin-top: 5px; }
+.users { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.card { border: 1px solid #e3d9f4; border-radius: 12px; padding: 18px; }
+.card h2 { margin: 0 0 8px; font-size: 1.1rem; }
+.card p { margin: 5px 0; color: #687086; overflow-wrap: anywhere; }
+.count { display: inline-block; margin-top: 10px; background: #ede4fa; color: #6135a8; border-radius: 20px; padding: 6px 10px; font-weight: bold; }
+@media (max-width: 650px) { .container { padding: 20px; } .users, .summary { grid-template-columns: 1fr; } }
