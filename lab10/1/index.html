@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Конвертер температур</title><link rel="stylesheet" href="./styles/style.css"></head>
+<body><main class="panel">
+<h1>Конвертер температур</h1>
+<p class="muted">Перевод между °C, °F и K</p>
+<label>Температура в °C<input id="celsius" type="number" step="any" placeholder="Например, 25"></label>
+<div class="actions"><button id="convert">Конвертировать</button><button id="clear" class="secondary">Очистить</button></div>
+<section id="result" class="result" aria-live="polite">Введите значение и нажмите «Конвертировать».</section>
+</main><script type="module" src="./src/main.js"></script></body></html>

@@ -1,0 +1,6 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Мини-CRM клиентов</title><link rel="stylesheet" href="./styles/style.css"></head>
+<body><main class="panel"><header><div><h1>Мини-CRM клиентов</h1><p>Добавление, поиск и управление контактами</p></div><span class="tag">ES Modules</span></header>
+<form id="client-form"><input id="name" placeholder="Имя клиента" maxlength="60"><input id="phone" placeholder="Телефон" maxlength="25"><input id="email" type="email" placeholder="Email" maxlength="80"><button type="submit">Добавить клиента</button></form>
+<p id="message" aria-live="polite"></p><input id="search" class="search" placeholder="Поиск по имени, телефону или email...">
+<div class="table-wrap"><table><thead><tr><th>Имя</th><th>Телефон</th><th>Email</th><th>Действия</th></tr></thead><tbody id="clients"></tbody></table></div><footer id="summary">Клиентов: 0</footer></main><script type="module" src="./src/main.js"></script></body></html>
