@@ -1,0 +1,11 @@
+const $=s=>document.querySelector(s),msg=$('#message');
+async function api(url,opt={}){let r=await fetch(url,{credentials:'same-origin',headers:{'Content-Type':'application/json'},...opt}),d=await r.json();if(!r.ok)throw Error(d.error);return d}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function refresh(){let [us,ev]=await Promise.all([api('/api/users'),api('/api/audit')]);$('#counts').textContent=`Всего: ${us.length} · Активных: ${us.filter(x=>x.active).length}`;$('#users').innerHTML=us.map(u=>`<tr><td>${esc(u.name)}<br><small>${esc(u.username)}</small></td><td>${u.role}</td><td>${u.active?'Активен':'Отключён'}</td><td>${u.id===1?'':`<button data-id="${u.id}" data-on="${!u.active}">${u.active?'Отключить':'Включить'}</button>`}</td></tr>`).join('');$('#audit').innerHTML=ev.map(x=>`<p><b>${esc(x.action)}</b> · ${esc(x.actor)} <small>${esc(x.time)} ${esc(x.details)}</small></p>`).join('')||'<p class="muted">Событий пока нет</p>'}
+async function enter(u){$('#login').classList.add('hidden');$('#dash').classList.remove('hidden');$('#who').textContent=u.role.toUpperCase();await refresh()}
+$('#form').onsubmit=async e=>{e.preventDefault();try{await api('/api/login',{method:'POST',body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});enter(await api('/api/me'))}catch(x){msg.textContent=x.message}};
+$('#create').onsubmit=async e=>{e.preventDefault();try{await api('/api/users',{method:'POST',body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});e.target.reset();await refresh();msg.textContent='Пользователь добавлен'}catch(x){msg.textContent=x.message}};
+$('#users').onclick=async e=>{let b=e.target.closest('button[data-id]');if(!b)return;try{await api('/api/users/'+b.dataset.id,{method:'PATCH',body:JSON.stringify({active:b.dataset.on==='true'})});await refresh()}catch(x){msg.textContent=x.message}};
+$('#resource').onclick=async()=>{try{$('#result').textContent=(await api('/api/member-area')).message}catch(x){msg.textContent=x.message}};
+$('#out').onclick=async()=>{try{await api('/api/logout',{method:'POST'});$('#dash').classList.add('hidden');$('#login').classList.remove('hidden');$('#form').reset();msg.textContent='Сессия завершена'}catch(x){msg.textContent=x.message}};
+api('/api/me').then(enter).catch(()=>{});
