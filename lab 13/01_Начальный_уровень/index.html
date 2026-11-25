@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Daily List — Список покупок</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand"><div class="logo">✓</div> DAILY LIST</div><div class="tag">LAB 13 · НАЧАЛЬНЫЙ УРОВЕНЬ</div></header>
+<section class="hero"><div class="eyebrow">Простота в каждом действии</div><h1>Список покупок<span style="color:var(--accent)">.</span></h1><p>Собери всё необходимое в одном месте. Добавляй товары, отмечай покупки и удаляй то, что больше не нужно.</p></section>
+<div class="grid"><section class="card"><h2>Мой список</h2><p class="sub">Добавь товар, чтобы он появился ниже</p><div class="row" style="margin-bottom:20px"><input id="product" class="field" placeholder="Например, молоко..." maxlength="60"><button id="add" class="btn primary">＋ Добавить</button></div><div class="sectionhead"><span class="pill" id="count">0 товаров</span><button id="clear" class="iconbtn">Очистить всё</button></div><div id="items" class="list"></div><p class="note">Структура данных: <b>list</b> — упорядоченный изменяемый список. Добавление выполняется через append(), удаление — через remove().</p></section>
+<aside class="card"><h2>Обзор списка</h2><div class="stat"><strong id="total">0</strong><span>Всего товаров</span></div><div class="stat"><strong id="done">0</strong><span>Куплено</span></div><div class="stat"><strong id="left">0</strong><span>Осталось купить</span></div><div class="note">Небольшой совет: добавляй товары по мере того, как вспоминаешь о них. Список поможет ничего не забыть.</div></aside></div>
+</div><script src="app.js"></script></body></html>

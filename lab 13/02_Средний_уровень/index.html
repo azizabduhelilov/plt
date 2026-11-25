@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>OrderFlow — Центр заказов</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand"><div class="logo">↗</div> ORDERFLOW</div><div class="tag">LAB 13 · СРЕДНИЙ УРОВЕНЬ</div></header>
+<section class="hero"><div class="eyebrow">Поток заказов под контролем</div><h1>Центр заказов<span style="color:var(--accent2)">.</span></h1><p>Управляй очередью в правильном порядке: первый принятый заказ обслуживается первым. Найди заказ по номеру или посмотри, что ещё ожидает обработки.</p></section>
+<div class="grid"><section class="card"><div class="sectionhead"><h2>Новая заявка</h2><span class="pill">FIFO · deque</span></div><div class="row" style="margin-bottom:10px"><input id="customer" class="field" placeholder="Имя клиента"><input id="details" class="field" placeholder="Что заказали?"></div><button id="add" class="btn primary" style="width:100%;margin-bottom:22px">＋ Принять заказ</button>
+<div class="sectionhead"><h2>Очередь на обработку</h2><span id="queueCount" class="pill">0 в очереди</span></div><div id="orders" class="list"></div><p class="note">Структура данных: <b>collections.deque</b>. Добавление в конец — append(), выдача первого — popleft().</p></section>
+<aside class="card"><h2>Панель оператора</h2><div class="stat"><strong id="pending">0</strong><span>Ожидают обработки</span></div><div class="stat"><strong id="served">0</strong><span>Обработано заказов</span></div><div style="margin:18px 0 10px"><input id="search" class="field" placeholder="Поиск по номеру заказа"></div><div id="searchResult" class="note">Введите номер, например ORD-1001</div><button id="serve" class="btn primary" style="width:100%;margin-top:18px">Обслужить первый заказ →</button><button id="report" class="btn secondary" style="width:100%;margin-top:9px">Сформировать отчёт</button><div id="reportBox" class="note"></div></aside></div>
+</div><script src="app.js"></script></body></html>
